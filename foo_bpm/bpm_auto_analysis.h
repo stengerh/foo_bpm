@@ -40,7 +40,6 @@ class bpm_auto_analysis
 		// File input
 		input_helper input_file;
 		service_ptr_t<file> m_file;
-		abort_callback_impl abort;
 		double offset_pct_inc;
 
 		// Audio decoding
@@ -88,7 +87,7 @@ class bpm_auto_analysis
 		double offset_sum;
 		#endif
 
-		bool read_file(double offset_pct);
+		bool read_file(double offset_pct, abort_callback &p_abort);
 		void calc_stft();
 		void calc_spectral_flux();
 		void pick_peaks();

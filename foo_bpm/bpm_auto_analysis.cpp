@@ -99,7 +99,7 @@ double bpm_auto_analysis::run(threaded_process_status & thread_status, abort_cal
 	for (double offset_pct = offset_pct_min; offset_pct < offset_pct_max; offset_pct+=offset_pct_inc)
 	{
 		// If we got an error back, skip this file's analysis. It'll be missing important values such as sample rate which are needed. BPM is set to zero.
-		if (!read_file(offset_pct))
+		if (!read_file(offset_pct, p_abort))
 		{
 			bpm_list.push_back(0);
 			break;
@@ -153,12 +153,12 @@ double bpm_auto_analysis::run(threaded_process_status & thread_status, abort_cal
 	return bpm_result;
 }
 
-bool bpm_auto_analysis::read_file(double offset_pct)
+bool bpm_auto_analysis::read_file(double offset_pct, abort_callback &p_abort)
 {
 	if (!input_file.is_open())
 	{
 		// Open the file if it isn't already open
-		input_file.open(m_file, p_item, 0, abort, false, false);
+		input_file.open(m_file, p_item, 0, p_abort, false, false);
 	}
 
 	if (!input_file.is_open())
@@ -169,7 +169,7 @@ bool bpm_auto_analysis::read_file(double offset_pct)
 
 	if (input_file.can_seek())
 	{
-		input_file.seek(p_item->get_length()*offset_pct, abort);
+		input_file.seek(p_item->get_length()*offset_pct, p_abort);
 	}
 	else
 	{
@@ -178,7 +178,7 @@ bool bpm_auto_analysis::read_file(double offset_pct)
 
 	// Grab and ignore the first chunk as it will most likely have an odd sample chunk size
 	// TODO: Handle case where we reach EOF (run() returns false)
-	if (!input_file.run(chunk, abort))
+	if (!input_file.run(chunk, p_abort))
 	{
 		console::formatter() << "foo_bpm: Error analysing " << p_item->get_path() << ". Unexpected end of file found.";
 		return false;
@@ -201,7 +201,7 @@ bool bpm_auto_analysis::read_file(double offset_pct)
 	while (audio_buffer.size() < max_samples)
 	{
 		// Get a chunk of audio from the file so we can extract sample/channel properties
-		input_file.run(chunk, abort);
+		input_file.run(chunk, p_abort);
 
 		// Sample is a unit of interleaved PCM data (ie 1 sample corresponds to 2 values for stereo PCM data, 6 for 5.1 etc)
 		sample_count = chunk.get_sample_count();
