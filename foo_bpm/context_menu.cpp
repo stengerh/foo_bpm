@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include "context_menu.h"
+#include "guid.h"
+#include "foo_bpm.h"
 #include "bpm_auto_analysis_thread.h"
 
 static contextmenu_group_popup_factory g_bpm_context_group(guid_bpm_context_group, contextmenu_groups::root, "BPM Analysis", 0);
@@ -38,96 +40,19 @@ void contextmenu_item_simple_bpm::get_item_name(unsigned p_index, pfc::string_ba
 
 void contextmenu_item_simple_bpm::context_command(unsigned p_index, metadb_handle_list_cref p_data, const GUID& p_caller)
 {
-	bpm_manual_dialog* m_bpm_manual_dialog;
-	
-	int p_data_size = p_data.get_size();
-	file_info_impl f_info;
-	float bpm = 0;
-	const char* str = "";
-	char bpm_str[256];
-	pfc::list_t<metadb_handle_ptr> p_data_local;
-	pfc::list_t<file_info_impl> p_info;
-
 	switch (p_index)
 	{
 	    case mnuAutoAnalysis:
-			{
-				service_ptr_t<bpm_auto_analysis_thread> thread = new service_impl_t<bpm_auto_analysis_thread>(p_data);
-				thread->start();
-			}
+			run_auto_analysis(p_data);
 			break;
 		case mnuManualAnalysis:
-			m_bpm_manual_dialog = new bpm_manual_dialog();
-			m_bpm_manual_dialog->Create(core_api::get_main_window(), NULL);
-			m_bpm_manual_dialog->ShowWindow(SW_SHOWNORMAL);
+			run_manual_analysis(p_data);
 			break;
 		case mnuDoubleBPM:
+			run_double_or_halve_bpm(p_data, false);
+			break;
 		case mnuHalveBPM:
-			p_data_local.set_size(p_data_size);
-			p_info.set_size(p_data_size);
-			for (int i = 0; i < p_data_size; i++)
-			{
-				p_data_local[i] = p_data[i];
-			}
-
-			// For each item in the playlist selection
-			for (int item = 0; item < p_data_size; item++)
-			{
-				if (!p_data_local[item]->get_info(p_info[item]))
-				{
-					p_data_local.remove_by_idx(item);
-					p_info.remove_by_idx(item);
-					p_data_size--;
-					item--;
-					continue;
-				}
-				
-				// Are any of the tracks missing the BPM tag?
-				if (p_info[item].meta_get(bpm_config_bpm_tag.get_ptr(), 0) == 0)
-				{
-					p_data_local.remove_by_idx(item);
-					p_info.remove_by_idx(item);
-					p_data_size--;
-					item--;
-					continue;
-				}
-			}
-
-
-			for (int i = 0; i < p_data_size; i++)
-			{
-				str = p_info[i].meta_get(bpm_config_bpm_tag.get_ptr(), 0);
-
-				sscanf_s(str, "%f", &bpm);
-
-				if (p_index == mnuDoubleBPM)
-				{
-					bpm = bpm * 2;
-				}
-				else if (p_index == mnuHalveBPM)
-				{
-					bpm = bpm / 2;
-				}
-
-				switch (bpm_config_bpm_precision)
-				{
-					case BPM_PRECISION_1:
-						sprintf_s(bpm_str, "%d", (int)bpm);
-						break;
-					case BPM_PRECISION_1DP:
-						sprintf_s(bpm_str, "%0.1f", bpm);
-						break;
-					case BPM_PRECISION_2DP:
-						sprintf_s(bpm_str, "%0.2f", bpm);
-						break;
-				}
-
-				p_info[i].meta_set(bpm_config_bpm_tag.get_ptr(), bpm_str);
-			}
-
-			static_api_ptr_t<metadb_io_v2>()->update_info_async_simple(p_data_local, pfc::ptr_list_const_array_t<const file_info,
-																	   file_info_impl *>(p_info.get_ptr(), p_data_size),
-																	   core_api::get_main_window(), NULL, NULL);
+			run_double_or_halve_bpm(p_data, true);
 			break;
 		default:
 			break;
@@ -179,6 +104,84 @@ bool contextmenu_item_simple_bpm::get_item_description(unsigned p_index, pfc::st
 	}
 
 	return true;
+}
+
+void contextmenu_item_simple_bpm::run_auto_analysis(metadb_handle_list_cref p_data)
+{
+	service_ptr_t<bpm_auto_analysis_thread> thread = new service_impl_t<bpm_auto_analysis_thread>(p_data);
+	thread->start();
+}
+
+void contextmenu_item_simple_bpm::run_manual_analysis(metadb_handle_list_cref p_data)
+{
+	bpm_manual_dialog* dlg = new bpm_manual_dialog();
+	dlg->Create(core_api::get_main_window(), NULL);
+	dlg->ShowWindow(SW_SHOWNORMAL);
+}
+
+void contextmenu_item_simple_bpm::run_double_or_halve_bpm(metadb_handle_list_cref p_data, bool p_halve)
+{
+	const pfc::string8 bpm_tag = bpm_config_bpm_tag;
+	const int bpm_precision = bpm_config_bpm_precision;
+
+	metadb_handle_list tracks;
+	pfc::list_t<file_info_impl> infos;
+
+	tracks.prealloc(p_data.get_size());
+	infos.prealloc(p_data.get_size());
+
+	// For each item in the playlist selection
+	for (t_size index = 0; index < p_data.get_size(); index++)
+	{
+		metadb_handle_ptr track = p_data[index];
+		file_info_impl info;
+
+		if (track->get_info(info) && info.meta_exists(bpm_tag))
+		{
+			tracks.add_item(track);
+			infos.add_item(info);
+		}
+	}
+
+	char bpm_str[256];
+
+	for (t_size index = 0; index < infos.get_size(); index++)
+	{
+		const char * str = infos[index].meta_get(bpm_tag, 0);
+
+		float bpm = 0.0f;
+		sscanf_s(str, "%f", &bpm);
+
+		if (p_halve)
+		{
+			bpm = bpm / 2;
+		}
+		else
+		{
+			bpm = bpm * 2;
+		}
+
+		switch (bpm_precision)
+		{
+			case BPM_PRECISION_1:
+				sprintf_s(bpm_str, "%d", (int)bpm);
+				break;
+			case BPM_PRECISION_1DP:
+				sprintf_s(bpm_str, "%0.1f", bpm);
+				break;
+			case BPM_PRECISION_2DP:
+				sprintf_s(bpm_str, "%0.2f", bpm);
+				break;
+		}
+
+		infos[index].meta_set(bpm_tag, bpm_str);
+	}
+
+	static_api_ptr_t<metadb_io_v2>()->update_info_async_simple(tracks,
+		pfc::ptr_list_const_array_t<const file_info, file_info_impl *>(infos.get_ptr(), infos.get_size()),
+		core_api::get_main_window(),
+		/* p_op_flags */ 0,
+		/* p_notify */ NULL);
 }
 
 static contextmenu_item_factory_t<contextmenu_item_simple_bpm> contextmenu_factory;
