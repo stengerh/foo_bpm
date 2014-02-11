@@ -19,7 +19,7 @@
 // foobar2000/FFTW includes
 #include "foobar2000/SDK/foobar2000.h"
 #include "foobar2000/helpers/helpers.h"
-#include "../../../inc/fftw3.h"
+#include "fftw3.h"
 
 using namespace std;
 
