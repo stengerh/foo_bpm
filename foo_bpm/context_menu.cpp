@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "context_menu.h"
 
 static contextmenu_group_popup_factory g_bpm_context_group(guid_bpm_context_group, contextmenu_groups::root, "BPM Analysis", 0);

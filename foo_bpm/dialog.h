@@ -8,8 +8,8 @@
 #include "globals.h"
 #include "preferences.h"
 
-#include "../SDK/foobar2000.h"
-#include "../ATLHelpers/ATLHelpers.h"
+#include "foobar2000/SDK/foobar2000.h"
+#include "foobar2000/ATLHelpers/ATLHelpers.h"
 
 using namespace std;
 

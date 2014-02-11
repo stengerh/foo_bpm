@@ -4,7 +4,7 @@
 #include "guid.h"
 #include "foo_bpm.h"
 
-#include "../SDK/foobar2000.h"
+#include "foobar2000/SDK/foobar2000.h"
 
 class contextmenu_item_simple_bpm : public contextmenu_item_simple
 {

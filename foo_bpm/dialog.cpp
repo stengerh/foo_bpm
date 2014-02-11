@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "dialog.h"
 
 LRESULT bpm_result_dialog::OnInitDialog(CWindow wndFocus, LPARAM lInitParam)
