@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "context_menu.h"
+#include "bpm_contextmenu_item.h"
 #include "guid.h"
 #include "foo_bpm.h"
 #include "bpm_auto_analysis_thread.h"
@@ -8,17 +8,17 @@
 static contextmenu_group_popup_factory g_bpm_context_group(guid_bpm_context_group, contextmenu_groups::root, "BPM Analyser", 0);
 
 
-GUID contextmenu_item_simple_bpm::get_parent()
+GUID bpm_contextmenu_item::get_parent()
 {
 	return guid_bpm_context_group;
 }
 
-unsigned contextmenu_item_simple_bpm::get_num_items()
+unsigned bpm_contextmenu_item::get_num_items()
 {
 	return mnuTotal;
 }
 
-void contextmenu_item_simple_bpm::get_item_name(unsigned p_index, pfc::string_base & p_out)
+void bpm_contextmenu_item::get_item_name(unsigned p_index, pfc::string_base & p_out)
 {
 	switch (p_index)
 	{
@@ -39,7 +39,7 @@ void contextmenu_item_simple_bpm::get_item_name(unsigned p_index, pfc::string_ba
 	}
 }
 
-void contextmenu_item_simple_bpm::context_command(unsigned p_index, metadb_handle_list_cref p_data, const GUID& p_caller)
+void bpm_contextmenu_item::context_command(unsigned p_index, metadb_handle_list_cref p_data, const GUID& p_caller)
 {
 	switch (p_index)
 	{
@@ -50,17 +50,17 @@ void contextmenu_item_simple_bpm::context_command(unsigned p_index, metadb_handl
 			run_manual_analysis(p_data);
 			break;
 		case mnuDoubleBPM:
-			run_double_or_halve_bpm(p_data, false);
+			run_scale_bpm(p_data, 2.0);
 			break;
 		case mnuHalveBPM:
-			run_double_or_halve_bpm(p_data, true);
+			run_scale_bpm(p_data, 0.5);
 			break;
 		default:
 			break;
 	}
 }
 
-GUID contextmenu_item_simple_bpm::get_item_guid(unsigned p_index)
+GUID bpm_contextmenu_item::get_item_guid(unsigned p_index)
 {
 	switch (p_index)
 	{
@@ -83,7 +83,7 @@ GUID contextmenu_item_simple_bpm::get_item_guid(unsigned p_index)
 	return pfc::guid_null;
 }
 
-bool contextmenu_item_simple_bpm::get_item_description(unsigned p_index, pfc::string_base & p_out)
+bool bpm_contextmenu_item::get_item_description(unsigned p_index, pfc::string_base & p_out)
 {
 	switch (p_index)
 	{
@@ -107,20 +107,20 @@ bool contextmenu_item_simple_bpm::get_item_description(unsigned p_index, pfc::st
 	return true;
 }
 
-void contextmenu_item_simple_bpm::run_auto_analysis(metadb_handle_list_cref p_data)
+void bpm_contextmenu_item::run_auto_analysis(metadb_handle_list_cref p_data)
 {
 	service_ptr_t<bpm_auto_analysis_thread> thread = new service_impl_t<bpm_auto_analysis_thread>(p_data);
 	thread->start();
 }
 
-void contextmenu_item_simple_bpm::run_manual_analysis(metadb_handle_list_cref p_data)
+void bpm_contextmenu_item::run_manual_analysis(metadb_handle_list_cref p_data)
 {
 	bpm_manual_dialog* dlg = new bpm_manual_dialog();
 	dlg->Create(core_api::get_main_window(), NULL);
 	dlg->ShowWindow(SW_SHOWNORMAL);
 }
 
-void contextmenu_item_simple_bpm::run_double_or_halve_bpm(metadb_handle_list_cref p_data, bool p_halve)
+void bpm_contextmenu_item::run_scale_bpm(metadb_handle_list_cref p_data, double p_scale)
 {
 	const pfc::string8 bpm_tag = bpm_config_bpm_tag;
 
@@ -148,18 +148,12 @@ void contextmenu_item_simple_bpm::run_double_or_halve_bpm(metadb_handle_list_cre
 		const char * str = infos[index].meta_get(bpm_tag, 0);
 
 		float bpm = 0.0f;
-		sscanf_s(str, "%f", &bpm);
-
-		if (p_halve)
+		if (sscanf_s(str, "%f", &bpm) == 1)
 		{
-			bpm = bpm / 2;
-		}
-		else
-		{
-			bpm = bpm * 2;
-		}
+			bpm = static_cast<float>(bpm * p_scale);
 
-		infos[index].meta_set(bpm_tag, format_bpm(bpm));
+			infos[index].meta_set(bpm_tag, format_bpm(bpm));
+		}
 	}
 
 	static_api_ptr_t<metadb_io_v2>()->update_info_async_simple(tracks,
@@ -169,4 +163,4 @@ void contextmenu_item_simple_bpm::run_double_or_halve_bpm(metadb_handle_list_cre
 		/* p_notify */ NULL);
 }
 
-static contextmenu_item_factory_t<contextmenu_item_simple_bpm> contextmenu_factory;
+static contextmenu_item_factory_t<bpm_contextmenu_item> contextmenu_factory;

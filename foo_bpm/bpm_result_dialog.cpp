@@ -60,7 +60,7 @@ LRESULT bpm_result_dialog::OnInitDialog(CWindow wndFocus, LPARAM lInitParam)
 	bpm_tag_label << "BPM will be written to %" << bpm_config_bpm_tag.get_ptr() << "% tag.";
 	uSetDlgItemText(m_hWnd, ID_RESULT_BPM_TAG, bpm_tag_label);
 
-	EnableDoubleHalveButtons();
+	EnableScaleBPMButtons();
 
 	return 0;
 }
@@ -97,7 +97,7 @@ LRESULT bpm_result_dialog::OnHalveBPMClicked(UINT uNotifyCode, int nID, CWindow 
 
 LRESULT bpm_result_dialog::OnItemChanged(LPNMHDR pnmh)
 {
-	EnableDoubleHalveButtons();
+	EnableScaleBPMButtons();
 
 	return 0;
 }
@@ -125,7 +125,7 @@ bool bpm_result_dialog::pretranslate_message(MSG *p_msg)
 	return false;
 }
 
-void bpm_result_dialog::EnableDoubleHalveButtons()
+void bpm_result_dialog::EnableScaleBPMButtons()
 {
 	CListViewCtrl listView(GetDlgItem(ID_BPM_RESULT_LIST));
 

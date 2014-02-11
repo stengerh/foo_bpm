@@ -42,7 +42,7 @@ private:
 
 	bool pretranslate_message(MSG *p_msg);
 
-	void EnableDoubleHalveButtons();
+	void EnableScaleBPMButtons();
 	void ScaleSelectionBPM(double p_factor);
 
 	metadb_handle_list m_tracks;

@@ -105,7 +105,7 @@
     <ClCompile Include="bpm_manual_dialog.cpp" />
     <ClCompile Include="bpm_preferences_page.cpp" />
     <ClCompile Include="bpm_result_dialog.cpp" />
-    <ClCompile Include="context_menu.cpp" />
+    <ClCompile Include="bpm_contextmenu_item.cpp" />
     <ClCompile Include="foo_bpm.cpp" />
     <ClCompile Include="format_bpm.cpp" />
     <ClCompile Include="preferences.cpp" />
@@ -116,7 +116,7 @@
     <ClInclude Include="bpm_manual_dialog.h" />
     <ClInclude Include="bpm_preferences_page.h" />
     <ClInclude Include="bpm_result_dialog.h" />
-    <ClInclude Include="context_menu.h" />
+    <ClInclude Include="bpm_contextmenu_item.h" />
     <ClInclude Include="dialog.h" />
     <ClInclude Include="foo_bpm.h" />
     <ClInclude Include="format_bpm.h" />

@@ -15,9 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="context_menu.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="foo_bpm.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -42,11 +39,11 @@
     <ClCompile Include="format_bpm.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="bpm_contextmenu_item.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="context_menu.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="dialog.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -84,6 +81,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="format_bpm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bpm_contextmenu_item.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
