@@ -31,7 +31,7 @@ class bpm_auto_analysis
 
 		bpm_auto_analysis(metadb_handle_ptr p_track);
 		~bpm_auto_analysis();
- 		double run(threaded_process_status & thread_status, abort_callback & p_abort);
+		double run_safe(threaded_process_status & thread_status, abort_callback & p_abort);
 
 	private:
 		metadb_handle_ptr m_track;
@@ -87,6 +87,7 @@ class bpm_auto_analysis
 		double offset_sum;
 		#endif
 
+ 		double run(threaded_process_status & thread_status, abort_callback & p_abort);
 		bool read_file(double offset_pct, abort_callback &p_abort);
 		void calc_stft();
 		void calc_spectral_flux();

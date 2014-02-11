@@ -105,7 +105,7 @@ void bpm_auto_analysis_thread::run(threaded_process_status & p_status, abort_cal
 		{
 			p_status.set_item_path(p_data[item]->get_location().get_path(), ~0);
 			bpm_auto_analysis bpm(p_data[item]);
-			bpm_results.push_back(bpm.run(p_status, p_abort));
+			bpm_results.push_back(bpm.run_safe(p_status, p_abort));
 
 			p_status.set_progress_secondary(item+1, p_data_size);
 		}

@@ -80,6 +80,19 @@ bpm_auto_analysis::~bpm_auto_analysis()
 
 }
 
+double bpm_auto_analysis::run_safe(threaded_process_status & thread_status, abort_callback & p_abort)
+{
+	try
+	{
+		return run(thread_status, p_abort);
+	}
+	catch (const std::exception &exc)
+	{
+		console::formatter() << "foo_bpm: Error analysing " << m_track->get_path() << ": " << exc;
+		return 0.0;
+	}
+}
+
 double bpm_auto_analysis::run(threaded_process_status & thread_status, abort_callback & p_abort)
 {
 	double bpm_result = 0;
