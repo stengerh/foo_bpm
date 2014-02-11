@@ -107,6 +107,7 @@
     <ClCompile Include="bpm_result_dialog.cpp" />
     <ClCompile Include="context_menu.cpp" />
     <ClCompile Include="foo_bpm.cpp" />
+    <ClCompile Include="format_bpm.cpp" />
     <ClCompile Include="preferences.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -118,6 +119,7 @@
     <ClInclude Include="context_menu.h" />
     <ClInclude Include="dialog.h" />
     <ClInclude Include="foo_bpm.h" />
+    <ClInclude Include="format_bpm.h" />
     <ClInclude Include="globals.h" />
     <ClInclude Include="guid.h" />
     <ClInclude Include="preferences.h" />
@@ -133,4 +135,9 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties RESOURCE_FILE="foo_bpm.rc" />
+    </VisualStudio>
+  </ProjectExtensions>
 </Project>

@@ -8,16 +8,16 @@
 class bpm_auto_analysis_thread : public threaded_process_callback
 {
 	public:
-		bpm_auto_analysis_thread(metadb_handle_list_cref playlist_items);
+		bpm_auto_analysis_thread(metadb_handle_list_cref p_tracks);
 		void start();
 
 	private:
-		pfc::list_t<metadb_handle_ptr> p_data;
-		pfc::list_t<file_info_impl> p_info;
-		int p_data_size;
-		std::vector<double> bpm_results;
 		void run(threaded_process_status & p_status, abort_callback & p_abort);
 		void on_done(HWND p_wnd, bool p_was_aborted);
+
+		pfc::list_t<metadb_handle_ptr> m_tracks;
+		pfc::list_t<file_info_impl> m_infos;
+		std::vector<double> m_bpm_results;
 };
 
 #endif // __BPM_AUTO_ANALYSIS_THREAD_H__

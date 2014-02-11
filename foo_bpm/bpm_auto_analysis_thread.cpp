@@ -6,15 +6,10 @@
 
 /***** Threading *****/
 
-bpm_auto_analysis_thread::bpm_auto_analysis_thread(metadb_handle_list_cref playlist_items)
+bpm_auto_analysis_thread::bpm_auto_analysis_thread(metadb_handle_list_cref p_tracks)
 {
-	p_data_size = playlist_items.get_size();
-	p_data.set_size(p_data_size);
-	p_info.set_size(p_data_size);
-	for (int i = 0; i < p_data_size; i++)
-	{
-		p_data[i] = playlist_items[i];
-	}
+	m_tracks.add_items(p_tracks);
+	m_infos.set_size(m_tracks.get_count());
 }
 
 void bpm_auto_analysis_thread::start()
@@ -22,39 +17,43 @@ void bpm_auto_analysis_thread::start()
 	bool bpm_missing = false;
 	bool rescan = false;
 
-	// For each item in the playlist selection
-	for (int item = 0; item < p_data_size; item++)
-    {
-		if (!p_data[item]->get_info(p_info[item]))
+	{
+		bit_array_bittable mask(m_tracks.get_size());
+
+		// For each item in the playlist selection
+		for (t_size index = 0; index < m_tracks.get_size(); index++)
 		{
-			p_data.remove_by_idx(item);
-			p_info.remove_by_idx(item);
-			p_data_size--;
-			item--;
-			continue;
+			if (m_tracks[index]->get_info(m_infos[index]))
+			{
+				// Are any of the tracks missing the BPM?
+				if (!m_infos[index].meta_exists(bpm_config_bpm_tag))
+				{
+					bpm_missing = true;
+				}
+			}
+			else
+			{
+				mask.set(index, true);
+			}
 		}
-		
-		// Are any of the tracks missing the BPM?
-		if (!bpm_missing && p_info[item].meta_get(bpm_config_bpm_tag.get_ptr(), 0) == 0)
-		{
-			bpm_missing = true;
-		}
+
+		m_tracks.remove_mask(mask);
+		m_infos.remove_mask(mask);
 	}
 
 	if (bpm_missing)
 	{
+		bit_array_bittable mask(m_tracks.get_count());
+
 		// For each item in the playlist selection
-		for (int item = 0; item < p_data_size; item++)
+		for (t_size index = 0; index < m_tracks.get_size(); index++)
 		{
 			// Remove any items that already have a BPM set. We only want to scan BPM-less tracks
-			if (p_info[item].meta_get(bpm_config_bpm_tag.get_ptr(), 0) != 0)
-			{
-				p_data.remove_by_idx(item);
-				p_info.remove_by_idx(item);
-				p_data_size--;
-				item--;
-			}
+			mask.set(index, m_infos[index].meta_exists(bpm_config_bpm_tag));
 		}
+
+		m_tracks.remove_mask(mask);
+		m_infos.remove_mask(mask);
 	}
 	else
 	{
@@ -86,28 +85,29 @@ void bpm_auto_analysis_thread::start()
 
 void bpm_auto_analysis_thread::run(threaded_process_status & p_status, abort_callback & p_abort)
 {
-	bpm_results.resize(0);
+	m_bpm_results.resize(0);
 
-	p_status.set_progress_secondary(0, p_data_size);
+	p_status.set_progress_secondary(0, m_tracks.get_size());
 
 	// For each item in the playlist selection
-	for (int item = 0; item < p_data_size; item++)
+	for (t_size index = 0; index < m_tracks.get_size(); index++)
     {
 		// Skip the file if it doesn't exist
-		if (!filesystem::g_exists(p_data[item]->get_path(), p_abort))
+		if (!filesystem::g_exists(m_tracks[index]->get_path(), p_abort))
 		{
-			p_data.remove_by_idx(item);
-			p_info.remove_by_idx(item);
-			p_data_size--;
-			item--;
+			m_tracks.remove_by_idx(index);
+			m_infos.remove_by_idx(index);
+			index--;
 		}
 		else
 		{
-			p_status.set_item_path(p_data[item]->get_location().get_path(), ~0);
-			bpm_auto_analysis bpm(p_data[item]);
-			bpm_results.push_back(bpm.run_safe(p_status, p_abort));
+			p_status.set_item_path(m_tracks[index]->get_location().get_path());
 
-			p_status.set_progress_secondary(item+1, p_data_size);
+			bpm_auto_analysis bpm(m_tracks[index]);
+			double bpm_result = bpm.run_safe(p_status, p_abort);
+			m_bpm_results.push_back(bpm_result);
+
+			p_status.set_progress_secondary(index+1, m_tracks.get_size());
 		}
 
 		if (p_abort.is_aborting()) break;
@@ -118,11 +118,7 @@ void bpm_auto_analysis_thread::on_done(HWND p_wnd, bool p_was_aborted)
 {
 	if (!p_was_aborted && core_api::assert_main_thread())
 	{
-		bpm_result_dialog* m_result_dialog = new bpm_result_dialog();
-		m_result_dialog->p_data = p_data;
-		m_result_dialog->p_info = p_info;
-		m_result_dialog->p_data_size = p_data_size;
-		m_result_dialog->bpm_results = bpm_results;
+		bpm_result_dialog* m_result_dialog = new bpm_result_dialog(m_tracks, m_infos, m_bpm_results);
 
 		m_result_dialog->Create(core_api::get_main_window(), NULL);
 		m_result_dialog->ShowWindow(SW_SHOWNORMAL);

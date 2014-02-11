@@ -3,8 +3,9 @@
 #include "guid.h"
 #include "foo_bpm.h"
 #include "bpm_auto_analysis_thread.h"
+#include "format_bpm.h"
 
-static contextmenu_group_popup_factory g_bpm_context_group(guid_bpm_context_group, contextmenu_groups::root, "BPM Analysis", 0);
+static contextmenu_group_popup_factory g_bpm_context_group(guid_bpm_context_group, contextmenu_groups::root, "BPM Analyser", 0);
 
 
 GUID contextmenu_item_simple_bpm::get_parent()
@@ -22,10 +23,10 @@ void contextmenu_item_simple_bpm::get_item_name(unsigned p_index, pfc::string_ba
 	switch (p_index)
 	{
 	    case mnuAutoAnalysis:
-		    p_out = "Automatically analyse BPMs...";
+		    p_out = "Automatically analyse BPMs";
 			break;
 		case mnuManualAnalysis:
-			p_out = "Manually tap BPM for current track...";
+			p_out = "Manually tap BPM for current track";
 			break;
 		case mnuDoubleBPM:
 			p_out = "Double selected BPMs";
@@ -122,7 +123,6 @@ void contextmenu_item_simple_bpm::run_manual_analysis(metadb_handle_list_cref p_
 void contextmenu_item_simple_bpm::run_double_or_halve_bpm(metadb_handle_list_cref p_data, bool p_halve)
 {
 	const pfc::string8 bpm_tag = bpm_config_bpm_tag;
-	const int bpm_precision = bpm_config_bpm_precision;
 
 	metadb_handle_list tracks;
 	pfc::list_t<file_info_impl> infos;
@@ -143,8 +143,6 @@ void contextmenu_item_simple_bpm::run_double_or_halve_bpm(metadb_handle_list_cre
 		}
 	}
 
-	char bpm_str[256];
-
 	for (t_size index = 0; index < infos.get_size(); index++)
 	{
 		const char * str = infos[index].meta_get(bpm_tag, 0);
@@ -161,20 +159,7 @@ void contextmenu_item_simple_bpm::run_double_or_halve_bpm(metadb_handle_list_cre
 			bpm = bpm * 2;
 		}
 
-		switch (bpm_precision)
-		{
-			case BPM_PRECISION_1:
-				sprintf_s(bpm_str, "%d", (int)bpm);
-				break;
-			case BPM_PRECISION_1DP:
-				sprintf_s(bpm_str, "%0.1f", bpm);
-				break;
-			case BPM_PRECISION_2DP:
-				sprintf_s(bpm_str, "%0.2f", bpm);
-				break;
-		}
-
-		infos[index].meta_set(bpm_tag, bpm_str);
+		infos[index].meta_set(bpm_tag, format_bpm(bpm));
 	}
 
 	static_api_ptr_t<metadb_io_v2>()->update_info_async_simple(tracks,
