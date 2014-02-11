@@ -72,25 +72,25 @@ BOOL bpm_preferences_page::OnInitDialog(CWindow wndFocus, LPARAM lInitParam)
 	
 	// This list MUST match the enum ordering of fft_window_size_enum
 	CComboBox fft_window_size_box = GetDlgItem(ID_CONFIG_FFT_WINDOW_SIZE);
-	fft_window_size_box.AddString(_T("64"));
-	fft_window_size_box.AddString(_T("128"));
-	fft_window_size_box.AddString(_T("256"));
-	fft_window_size_box.AddString(_T("512"));
-	fft_window_size_box.AddString(_T("1024"));
-	fft_window_size_box.AddString(_T("2048"));
+	fft_window_size_box.AddString(_T("64 samples"));
+	fft_window_size_box.AddString(_T("128 samples"));
+	fft_window_size_box.AddString(_T("256 samples"));
+	fft_window_size_box.AddString(_T("512 samples"));
+	fft_window_size_box.AddString(_T("1024 samples"));
+	fft_window_size_box.AddString(_T("2048 samples"));
 	fft_window_size_box.AddString(_T("4096"));
 	fft_window_size_box.AddString(_T("8192"));
 	fft_window_size_box.SetCurSel(bpm_config_fft_window_size);
 
 	CComboBox fft_window_slide_box = GetDlgItem(ID_CONFIG_FFT_WINDOW_SLIDE);
-	fft_window_slide_box.AddString(_T("64"));
-	fft_window_slide_box.AddString(_T("128"));
-	fft_window_slide_box.AddString(_T("256"));
-	fft_window_slide_box.AddString(_T("512"));
-	fft_window_slide_box.AddString(_T("1024"));
-	fft_window_slide_box.AddString(_T("2048"));
-	fft_window_slide_box.AddString(_T("4096"));
-	fft_window_slide_box.AddString(_T("8192"));
+	fft_window_slide_box.AddString(_T("64 samples"));
+	fft_window_slide_box.AddString(_T("128 samples"));
+	fft_window_slide_box.AddString(_T("256 samples"));
+	fft_window_slide_box.AddString(_T("51 samples2"));
+	fft_window_slide_box.AddString(_T("1024 samples"));
+	fft_window_slide_box.AddString(_T("2048 samples"));
+	fft_window_slide_box.AddString(_T("4096 samples"));
+	fft_window_slide_box.AddString(_T("8192 samples"));
 	fft_window_slide_box.AddString(_T("Auto"));
 	fft_window_slide_box.SetCurSel(bpm_config_fft_window_slide);
 
@@ -363,7 +363,7 @@ void bpm_preferences_page::OnChanged()
 
 const char * bpm_preferences_page_impl::get_name()
 {
-	return "BPM Auto Analysis";
+	return "BPM Analyser";
 }
 
 GUID bpm_preferences_page_impl::get_guid()

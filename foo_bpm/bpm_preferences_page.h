@@ -6,12 +6,12 @@
 
 #include "resource.h"
 
-class bpm_preferences_page : public preferences_page_instance, public CAxDialogImpl<bpm_preferences_page>
+class bpm_preferences_page : public preferences_page_instance, public CDialogImpl<bpm_preferences_page>
 {
 	public:
 		bpm_preferences_page(preferences_page_callback::ptr callback) : m_callback(callback) {}
 
-		/***** CAxDialogImpl *****/
+		/***** CDialogImpl *****/
 		enum { IDD = IDD_BPM_PREFERENCES };
 
 		/***** preferences_page *****/

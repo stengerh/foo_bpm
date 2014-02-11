@@ -12,8 +12,6 @@
 #include "resource.h"
 #include "globals.h"
 #include "guid.h"
-#include "dialog.h"
-#include "context_menu.h"
 #include "preferences.h"
 
 // foobar2000/FFTW includes
