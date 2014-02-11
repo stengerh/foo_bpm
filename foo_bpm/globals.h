@@ -1,7 +1,7 @@
 #ifndef __GLOBALS_H__
 #define __GLOBALS_H__
 
-#include "../SDK/foobar2000.h"
+#include "foobar2000/SDK/foobar2000.h"
 #include "guid.h"
 
 // Config variables

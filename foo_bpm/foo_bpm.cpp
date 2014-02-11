@@ -66,6 +66,7 @@
 *
 ******************************************************************************/
 
+#include "stdafx.h"
 #include "foo_bpm.h"
 
 DECLARE_COMPONENT_VERSION("BPM Analyser", "0.2.4.1",

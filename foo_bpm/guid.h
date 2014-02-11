@@ -1,7 +1,7 @@
 #ifndef __GUID_H__
 #define __GUID_H__
 
-#include "../SDK/foobar2000.h"
+#include "foobar2000/SDK/foobar2000.h"
 
 static const GUID guid_bpm_preferences = { 0x3aa6b47b, 0xc29f, 0x43e8, { 0x9a, 0xd8, 0x77, 0xd3, 0xe8, 0xeb, 0x8c, 0x7b } };
 

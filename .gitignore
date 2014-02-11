@@ -1,0 +1,10 @@
+/ipch
+/Release
+/Debug
+/*.opensdf
+/*.sdf
+/*.suo
+/foo_bpm/*.user
+/foo_bpm/Debug
+/foo_bpm/Release
+/foo_bpm/*.aps
