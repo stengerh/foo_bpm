@@ -2,7 +2,7 @@
 #include "bpm_auto_analysis_thread.h"
 #include "bpm_auto_analysis.h"
 #include "preferences.h"
-#include "dialog.h"
+#include "bpm_result_dialog.h"
 
 /***** Threading *****/
 

@@ -4,6 +4,7 @@
 #include "foo_bpm.h"
 #include "bpm_auto_analysis_thread.h"
 #include "format_bpm.h"
+#include "bpm_manual_dialog.h"
 
 static contextmenu_group_popup_factory g_bpm_context_group(guid_bpm_context_group, contextmenu_groups::root, "BPM Analyser", 0);
 

@@ -44,9 +44,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="dialog.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="foo_bpm.h">
       <Filter>Header Files</Filter>
     </ClInclude>
