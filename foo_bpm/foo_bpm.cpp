@@ -63,20 +63,37 @@
 * 12/01/2010 | 0.2.4        | Crash report fix (component about message)
 * -----------------------------------------------------------------------------
 * 19/04/2010 | 0.2.4.1      | Numerous bug fixes
-*
+* -----------------------------------------------------------------------------
+* 2014-02-11 | 0.2.4.2      | Fixed abort checks in worker thread
+*            |              | Added basic exception handling in worker thread
+*            |              | Numerous refactorings
 ******************************************************************************/
 
 #include "stdafx.h"
-#include "foo_bpm.h"
 
-DECLARE_COMPONENT_VERSION("BPM Analyser", "0.2.4.1",
-"A component for automatically analysing the BPM of audio files.\n\n\
-Makes use of the FFTW library (www.fftw.org)\n\n\
-References:\n\
-Tempo and Beat Estimation of Musical Signals -\nhttp://ismir2004.ismir.net/proceedings/p032-page-158-paper191.pdf \n\n\
-Onset Detection Revisited -\nhttp://www.dafx.ca/proceedings/papers/p_133.pdf \n\n\
-A Comparison of Sound Onset Detection Algorithms with Emphasis on Psychoacoustically Motivated Detection Functions -\nhttp://www.cogs.susx.ac.uk/users/nc81/research/comparison.pdf \n\n\
-Window Functions -\nhttp://en.wikipedia.org/wiki/Window_function#Window_examples \n\n\n\
-(c) 2009-2010 Michael Balzer (fraganator@hotmail.com)");
+#include "foobar2000/SDK/foobar2000.h"
+
+DECLARE_COMPONENT_VERSION(
+	"BPM Analyser",
+	"0.2.4.2",
+	"A component for automatically analysing the BPM of audio files.\n"
+	"\n"
+	"Makes use of the FFTW library (www.fftw.org)\n"
+	"\n"
+	"References:\n"
+	"Tempo and Beat Estimation of Musical Signals -\n"
+	"http://ismir2004.ismir.net/proceedings/p032-page-158-paper191.pdf\n"
+	"\n"
+	"Onset Detection Revisited -\nhttp://www.dafx.ca/proceedings/papers/p_133.pdf\n"
+	"\n"
+	"A Comparison of Sound Onset Detection Algorithms with Emphasis on Psychoacoustically Motivated Detection Functions -\n"
+	"http://www.cogs.susx.ac.uk/users/nc81/research/comparison.pdf\n"
+	"\n"
+	"Window Functions -\n"
+	"http://en.wikipedia.org/wiki/Window_function#Window_examples\n"
+	"\n"
+	"\n"
+	"(c) 2009-2010 Michael Balzer (fraganator@hotmail.com)"
+);
 
 VALIDATE_COMPONENT_FILENAME("foo_bpm.dll");
