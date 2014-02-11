@@ -17,7 +17,18 @@ bpm_result_dialog::bpm_result_dialog(metadb_handle_list_cref p_tracks, const pfc
 
 LRESULT bpm_result_dialog::OnInitDialog(CWindow wndFocus, LPARAM lInitParam)
 {
-	CWindow result_list = GetDlgItem(ID_BPM_RESULT_LIST);
+	if (bpm_config_auto_write_tag)
+	{
+		static_api_ptr_t<metadb_io_v2>()->update_info_async_simple(
+			m_tracks,
+			pfc::ptr_list_const_array_t<const file_info, file_info_impl *>(m_infos.get_ptr(), m_infos.get_size()),
+			core_api::get_main_window(),
+			NULL, NULL);
+
+		DestroyWindow();
+	}
+
+	CListViewCtrl result_list = GetDlgItem(ID_BPM_RESULT_LIST);
 
 	listview_helper::insert_column(result_list, 0, "Title", 270);
 	// TODO: Remember status of scan result (ie. success, ambiguous, double, half)
@@ -26,7 +37,7 @@ LRESULT bpm_result_dialog::OnInitDialog(CWindow wndFocus, LPARAM lInitParam)
 	// TODO: Allow selection of an alternate BPM
 //	 listview_helper::insert_column(result_list, 3, "BPM (Alt)", 50);
 
-	ListView_SetExtendedListViewStyle(result_list, LVS_EX_GRIDLINES | LVS_EX_FULLROWSELECT);// | LVS_EX_CHECKBOXES);
+	result_list.SetExtendedListViewStyle(LVS_EX_GRIDLINES | LVS_EX_FULLROWSELECT);// | LVS_EX_CHECKBOXES);
 
 	string title_column;
 
@@ -49,16 +60,7 @@ LRESULT bpm_result_dialog::OnInitDialog(CWindow wndFocus, LPARAM lInitParam)
 	bpm_tag_label << "BPM will be written to %" << bpm_config_bpm_tag.get_ptr() << "% tag.";
 	uSetDlgItemText(m_hWnd, ID_RESULT_BPM_TAG, bpm_tag_label);
 
-	if (bpm_config_auto_write_tag)
-	{
-		static_api_ptr_t<metadb_io_v2>()->update_info_async_simple(
-			m_tracks,
-			pfc::ptr_list_const_array_t<const file_info, file_info_impl *>(m_infos.get_ptr(), m_infos.get_size()),
-			core_api::get_main_window(),
-			NULL, NULL);
-
-		DestroyWindow();
-	}
+	EnableDoubleHalveButtons();
 
 	return 0;
 }
@@ -93,6 +95,13 @@ LRESULT bpm_result_dialog::OnHalveBPMClicked(UINT uNotifyCode, int nID, CWindow 
 	return 0;
 }
 
+LRESULT bpm_result_dialog::OnItemChanged(LPNMHDR pnmh)
+{
+	EnableDoubleHalveButtons();
+
+	return 0;
+}
+
 void bpm_result_dialog::OnClose()
 {
 	DestroyWindow();
@@ -101,6 +110,29 @@ void bpm_result_dialog::OnClose()
 void bpm_result_dialog::PostNcDestroy()
 {
 	delete this;
+}
+
+bool bpm_result_dialog::pretranslate_message(MSG *p_msg)
+{
+	if (m_hWnd != NULL)
+	{
+		if (IsDialogMessage(p_msg))
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
+void bpm_result_dialog::EnableDoubleHalveButtons()
+{
+	CListViewCtrl listView(GetDlgItem(ID_BPM_RESULT_LIST));
+
+	UINT selected = listView.GetSelectedCount();
+
+	GetDlgItem(ID_DOUBLE_BPM_BUTTON).EnableWindow(selected > 0);
+	GetDlgItem(ID_HALVE_BPM_BUTTON).EnableWindow(selected > 0);
 }
 
 void bpm_result_dialog::ScaleSelectionBPM(double p_factor)

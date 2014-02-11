@@ -90,13 +90,13 @@ STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | DS_CENTER | WS_POPUP | WS_CAPTI
 CAPTION "BPM Analysis Results"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    DEFPUSHBUTTON   "Update files",IDOK,282,221,50,14
-    PUSHBUTTON      "Cancel",IDCANCEL,338,221,50,14
     CONTROL         "",ID_BPM_RESULT_LIST,"SysListView32",LVS_REPORT | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,7,7,381,191
     LTEXT           "",ID_RESULT_BPM_TAG,8,204,210,8
-    PUSHBUTTON      "Double BPM",ID_DOUBLE_BPM_BUTTON,6,221,54,14
-    PUSHBUTTON      "Halve BPM",ID_HALVE_BPM_BUTTON,64,221,54,14
+    PUSHBUTTON      "&Double BPM",ID_DOUBLE_BPM_BUTTON,6,221,54,14
+    PUSHBUTTON      "&Halve BPM",ID_HALVE_BPM_BUTTON,64,221,54,14
     LTEXT           "Use ctrl+click to select multiple songs.",IDC_STATIC,122,224,126,8
+    DEFPUSHBUTTON   "&Update files",IDOK,282,221,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,338,221,50,14
 END
 
 IDD_BPM_PREFERENCES DIALOGEX 0, 0, 332, 296
@@ -150,13 +150,13 @@ CAPTION "Manual BPM Calculation"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     LTEXT           "Click or tap the spacebar to the beat of the playing song.\n\nOnce you're happy the BPM is stable, click ""Update Tag"" to write the BPM value to the song's tag.",IDC_STATIC,138,37,159,53
-    DEFPUSHBUTTON   "Tap Here",ID_BPM_MANUAL_TAP_BUTTON,7,7,120,66
-    PUSHBUTTON      "Update file",ID_BPM_MANUAL_UPDATE_TAG_BUTTON,7,109,54,14
-    PUSHBUTTON      "Cancel",IDCANCEL,243,109,54,14
+    DEFPUSHBUTTON   "&Tap Here",ID_BPM_MANUAL_TAP_BUTTON,7,7,120,66
+    PUSHBUTTON      "&Update file",ID_BPM_MANUAL_UPDATE_TAG_BUTTON,7,109,54,14
+    PUSHBUTTON      "Close",IDCANCEL,243,109,54,14
     CTEXT           "Calculated BPM",IDC_STATIC,192,6,50,8
     CTEXT           "0",ID_BPM_MANUAL_BPM,192,18,50,8
     LTEXT           "The BPM will be written to the %BPM% tag.",ID_MANUAL_BPM_TAG,7,96,261,8
-    PUSHBUTTON      "Reset BPM",ID_BPM_MANUAL_RESET_BUTTON,7,77,120,14
+    PUSHBUTTON      "&Reset BPM",ID_BPM_MANUAL_RESET_BUTTON,7,77,120,14
 END
 
 

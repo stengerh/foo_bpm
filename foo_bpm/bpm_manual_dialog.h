@@ -8,7 +8,7 @@
 
 #include "resource.h"
 
-class bpm_manual_dialog : public CDialogImpl<bpm_manual_dialog>
+class bpm_manual_dialog : public CDialogImpl<bpm_manual_dialog>, private message_filter_impl_base
 {
 public:
 	enum { IDD = IDD_BPM_MANUAL_DIALOG };
@@ -39,6 +39,8 @@ private:
 	void OnClose();
 	// Override the parent method for when the dialog is destroyed so we can delete its memory
 	void PostNcDestroy();
+
+	bool pretranslate_message(MSG *p_msg);
 
 	void ResetBPM();
 	void SetBPM(double bpm);

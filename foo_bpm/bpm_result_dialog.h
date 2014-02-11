@@ -8,7 +8,7 @@
 
 #include "resource.h"
 
-class bpm_result_dialog : public CDialogImpl<bpm_result_dialog>
+class bpm_result_dialog : public CDialogImpl<bpm_result_dialog>, private message_filter_impl_base
 {
 public:
 	enum { IDD = IDD_BPM_RESULT_DIALOG };
@@ -20,6 +20,7 @@ public:
 		COMMAND_HANDLER_EX(IDCANCEL, BN_CLICKED, OnCancel)
 		COMMAND_HANDLER_EX(ID_DOUBLE_BPM_BUTTON, BN_CLICKED, OnDoubleBPMClicked)
 		COMMAND_HANDLER_EX(ID_HALVE_BPM_BUTTON, BN_CLICKED, OnHalveBPMClicked)
+		NOTIFY_HANDLER_EX(ID_BPM_RESULT_LIST, LVN_ITEMCHANGED, OnItemChanged)
 		MSG_WM_CLOSE(OnClose);
 	END_MSG_MAP()
 
@@ -33,10 +34,15 @@ private:
 	LRESULT OnDoubleBPMClicked(UINT uNotifyCode, int nID, CWindow wndCtl);
 	LRESULT OnHalveBPMClicked(UINT uNotifyCode, int nID, CWindow wndCtl);
 
+	LRESULT OnItemChanged(LPNMHDR pnmh);
+
 	void OnClose();
 	// Override the parent method for when the dialog is destroyed so we can delete its memory
 	void PostNcDestroy();
 
+	bool pretranslate_message(MSG *p_msg);
+
+	void EnableDoubleHalveButtons();
 	void ScaleSelectionBPM(double p_factor);
 
 	metadb_handle_list m_tracks;

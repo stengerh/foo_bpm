@@ -113,6 +113,19 @@ void bpm_manual_dialog::PostNcDestroy()
 	delete this;
 }
 
+bool bpm_manual_dialog::pretranslate_message(MSG *p_msg)
+{
+	if (m_hWnd != NULL)
+	{
+		if (IsDialogMessage(p_msg))
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
 void bpm_manual_dialog::ResetBPM()
 {
 	tap_times.clear();
