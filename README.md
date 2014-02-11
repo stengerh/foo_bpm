@@ -1,4 +1,4 @@
-BPM Analyzer for foobar2000
+BPM Analyser for foobar2000
 ===========================
 
 Originally written by Michael Balzer.
