@@ -5,10 +5,9 @@
 
 /***** BPM Analysis *****/
 
-bpm_auto_analysis::bpm_auto_analysis(metadb_handle_ptr playlist_item)
+bpm_auto_analysis::bpm_auto_analysis(metadb_handle_ptr p_track):
+	m_track(p_track)
 {
-	p_item = playlist_item;
-
 	seconds_to_read = bpm_config_seconds_to_read;
 	num_bpms_to_calc = bpm_config_num_bpms_to_calc;
 	offset_pct_min = (double)bpm_config_offset_pct_min / 100.0;
@@ -89,10 +88,10 @@ double bpm_auto_analysis::run(threaded_process_status & thread_status, abort_cal
 
 	thread_status.set_progress(0, max_progress);
 
-	if (p_item->get_length() < seconds_to_read)
+	if (m_track->get_length() < seconds_to_read)
 	{
 		thread_status.set_progress(max_progress, max_progress);
-		console::formatter() << "foo_bpm: Error analysing " << p_item->get_path() << ". Track length too short. BPM set to zero.";
+		console::formatter() << "foo_bpm: Error analysing " << m_track->get_path() << ". Track length too short. BPM set to zero.";
 		return 0;
 	}
 
@@ -142,7 +141,7 @@ double bpm_auto_analysis::run(threaded_process_status & thread_status, abort_cal
 	if (bpm_config_output_debug)
 	{
 		console::formatter() << "\n";
-		console::formatter() << "foo_bpm: Estimated BPMs (sorted) for " << pfc::string_filename_ext(p_item->get_path()) << " are:";
+		console::formatter() << "foo_bpm: Estimated BPMs (sorted) for " << pfc::string_filename_ext(m_track->get_path()) << " are:";
 		for (unsigned i = 0; i < bpm_list.size(); i++)
 			console::formatter() << "BPM " << i+1 << " = " << bpm_list[i];
 
@@ -158,29 +157,29 @@ bool bpm_auto_analysis::read_file(double offset_pct, abort_callback &p_abort)
 	if (!input_file.is_open())
 	{
 		// Open the file if it isn't already open
-		input_file.open(m_file, p_item, 0, p_abort, false, false);
+		input_file.open(m_file, m_track, 0, p_abort, false, false);
 	}
 
 	if (!input_file.is_open())
 	{
-		console::formatter() << "foo_bpm: Error analysing " << p_item->get_path() << ". File could not be opened for analysis";
+		console::formatter() << "foo_bpm: Error analysing " << m_track->get_path() << ". File could not be opened for analysis";
 		return false;
 	}
 
 	if (input_file.can_seek())
 	{
-		input_file.seek(p_item->get_length()*offset_pct, p_abort);
+		input_file.seek(m_track->get_length()*offset_pct, p_abort);
 	}
 	else
 	{
-		console::formatter() << "foo_bpm: Warning - Failed to seek file " << p_item->get_path() << ". BPM result will be of first " << seconds_to_read << " seconds only.";
+		console::formatter() << "foo_bpm: Warning - Failed to seek file " << m_track->get_path() << ". BPM result will be of first " << seconds_to_read << " seconds only.";
 	}
 
 	// Grab and ignore the first chunk as it will most likely have an odd sample chunk size
 	// TODO: Handle case where we reach EOF (run() returns false)
 	if (!input_file.run(chunk, p_abort))
 	{
-		console::formatter() << "foo_bpm: Error analysing " << p_item->get_path() << ". Unexpected end of file found.";
+		console::formatter() << "foo_bpm: Error analysing " << m_track->get_path() << ". Unexpected end of file found.";
 		return false;
 	}
 

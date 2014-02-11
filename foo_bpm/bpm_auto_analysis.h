@@ -29,12 +29,12 @@ class bpm_auto_analysis
 		bool interpolate_flux;
 		int candidate_selection;
 
-		bpm_auto_analysis(metadb_handle_ptr playlist_item);
+		bpm_auto_analysis(metadb_handle_ptr p_track);
 		~bpm_auto_analysis();
-		double run(threaded_process_status & thread_status, abort_callback & p_abort);
+ 		double run(threaded_process_status & thread_status, abort_callback & p_abort);
 
 	private:
-		metadb_handle_ptr p_item;
+		metadb_handle_ptr m_track;
 		std::vector<double> bpm_list;
 
 		// File input
