@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "context_menu.h"
+#include "bpm_auto_analysis_thread.h"
 
 static contextmenu_group_popup_factory g_bpm_context_group(guid_bpm_context_group, contextmenu_groups::root, "BPM Analysis", 0);
 
@@ -38,7 +39,6 @@ void contextmenu_item_simple_bpm::get_item_name(unsigned p_index, pfc::string_ba
 void contextmenu_item_simple_bpm::context_command(unsigned p_index, metadb_handle_list_cref p_data, const GUID& p_caller)
 {
 	bpm_manual_dialog* m_bpm_manual_dialog;
-	service_ptr_t<bpm_auto_analysis_thread> thread = new service_impl_t<bpm_auto_analysis_thread>(p_data);
 	
 	int p_data_size = p_data.get_size();
 	file_info_impl f_info;
@@ -51,7 +51,10 @@ void contextmenu_item_simple_bpm::context_command(unsigned p_index, metadb_handl
 	switch (p_index)
 	{
 	    case mnuAutoAnalysis:
-			thread->start();
+			{
+				service_ptr_t<bpm_auto_analysis_thread> thread = new service_impl_t<bpm_auto_analysis_thread>(p_data);
+				thread->start();
+			}
 			break;
 		case mnuManualAnalysis:
 			m_bpm_manual_dialog = new bpm_manual_dialog();
@@ -95,7 +98,7 @@ void contextmenu_item_simple_bpm::context_command(unsigned p_index, metadb_handl
 			{
 				str = p_info[i].meta_get(bpm_config_bpm_tag.get_ptr(), 0);
 
-				sscanf(str, "%f", &bpm);
+				sscanf_s(str, "%f", &bpm);
 
 				if (p_index == mnuDoubleBPM)
 				{

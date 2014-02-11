@@ -100,12 +100,16 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="bpm_auto_analysis.cpp" />
+    <ClCompile Include="bpm_auto_analysis_thread.cpp" />
     <ClCompile Include="context_menu.cpp" />
     <ClCompile Include="dialog.cpp" />
     <ClCompile Include="foo_bpm.cpp" />
     <ClCompile Include="preferences.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="bpm_auto_analysis.h" />
+    <ClInclude Include="bpm_auto_analysis_thread.h" />
     <ClInclude Include="context_menu.h" />
     <ClInclude Include="dialog.h" />
     <ClInclude Include="foo_bpm.h" />
