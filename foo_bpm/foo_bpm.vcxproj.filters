@@ -42,6 +42,12 @@
     <ClCompile Include="bpm_contextmenu_item.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="bpm_fft.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="bpm_fft_impl_fftw.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="foo_bpm.h">
@@ -81,6 +87,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="bpm_contextmenu_item.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bpm_fft.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bpm_fft_impl_fftw.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

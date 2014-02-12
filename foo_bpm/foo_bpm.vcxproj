@@ -102,6 +102,8 @@
   <ItemGroup>
     <ClCompile Include="bpm_auto_analysis.cpp" />
     <ClCompile Include="bpm_auto_analysis_thread.cpp" />
+    <ClCompile Include="bpm_fft.cpp" />
+    <ClCompile Include="bpm_fft_impl_fftw.cpp" />
     <ClCompile Include="bpm_manual_dialog.cpp" />
     <ClCompile Include="bpm_preferences_page.cpp" />
     <ClCompile Include="bpm_result_dialog.cpp" />
@@ -113,6 +115,8 @@
   <ItemGroup>
     <ClInclude Include="bpm_auto_analysis.h" />
     <ClInclude Include="bpm_auto_analysis_thread.h" />
+    <ClInclude Include="bpm_fft.h" />
+    <ClInclude Include="bpm_fft_impl_fftw.h" />
     <ClInclude Include="bpm_manual_dialog.h" />
     <ClInclude Include="bpm_preferences_page.h" />
     <ClInclude Include="bpm_result_dialog.h" />

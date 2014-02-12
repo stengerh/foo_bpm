@@ -267,12 +267,13 @@ void bpm_auto_analysis::calc_stft()
 	num_fft_windows = (int)((audio_buffer.size() - fft_window_size) / fft_window_slide) + 1; // BUG: Divide by 0 - #24710, #24506. My hunch is playlist info is not yet available, so sample_rate has a value of zero.
 	// Work out number of seconds we're actually processing
 	seconds_in_fft = (double)(fft_window_slide * (num_fft_windows - 1) + fft_window_size) / (double)sample_rate;
-	fft_in = new double[fft_window_size];
-	fft_out = new double[fft_window_size];
 	// stft is a 2D array of num_fft_windows by fft_bin_size
 	stft = new double*[num_fft_windows];
 	// Output array will be out[r0,r1,r2,...,rn/2, i(n+1)/2-1,...,i2,i1]
-	fft_plan = fftw_plan_r2r_1d(fft_window_size, fft_in, fft_out, FFTW_R2HC, FFTW_MEASURE);
+	m_fft = bpm_fft::g_create();
+	m_fft->create_plan(fft_window_size);
+	double * fft_in = m_fft->get_input_buffer();
+	double * fft_out = m_fft->get_output_buffer();
 
 	// Window will slide along buffer
 	for (int fft_window = 0; fft_window < num_fft_windows; fft_window++)
@@ -301,7 +302,7 @@ void bpm_auto_analysis::calc_stft()
 		}
 
 		// Do the FFT
-		fftw_execute(fft_plan);
+		m_fft->execute_plan();
 
 		stft[fft_window] = new double[fft_bin_size];
 		// Copy the FFT result into the 2D STFT array
@@ -569,9 +570,8 @@ void bpm_auto_analysis::clean_up()
 {
 	input_file.close();
 
-	fftw_destroy_plan(fft_plan);
-	delete[] fft_in;
-	delete[] fft_out;
+	m_fft.release();
+
 	for (int i = 0; i < num_fft_windows; i++)
 	{
 		delete[] stft[i];
