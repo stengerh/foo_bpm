@@ -17,14 +17,15 @@ void format_bpm::format(double p_bpm, int p_precision)
 {
 	switch (p_precision)
 	{
-	case BPM_PRECISION_1:
-		m_formatter << pfc::format_int((int) p_bpm);
-		break;
 	case BPM_PRECISION_1DP:
 		m_formatter << pfc::format_float(p_bpm, 0, 1);
 		break;
 	case BPM_PRECISION_2DP:
 		m_formatter << pfc::format_float(p_bpm, 0, 2);
+		break;
+	case BPM_PRECISION_1:
+	default:
+		m_formatter << pfc::format_float(p_bpm, 0, 0);
 		break;
 	}
 }

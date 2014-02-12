@@ -3,10 +3,10 @@
 
 #include <vector>
 
-#include "fftw3.h"
-
 #include "foobar2000/SDK/foobar2000.h"
 #include "foobar2000/helpers/helpers.h"
+
+#include "bpm_fft.h"
 
 class bpm_auto_analysis
 {
@@ -57,11 +57,11 @@ class bpm_auto_analysis
 		int num_fft_windows;
 		int sample_window_offset;
 		double seconds_in_fft;
-		double* fft_in;
-		double* fft_out;
+		//double* fft_in;
+		//double* fft_out;
 		double** stft;
 		double* spectral_flux;
-		fftw_plan fft_plan;
+		bpm_fft::ptr m_fft;
 
 		// Peak detection
 		bool do_peak_picking;

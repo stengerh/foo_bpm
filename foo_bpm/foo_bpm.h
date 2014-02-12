@@ -14,10 +14,9 @@
 #include "guid.h"
 #include "preferences.h"
 
-// foobar2000/FFTW includes
+// foobar2000 includes
 #include "foobar2000/SDK/foobar2000.h"
 #include "foobar2000/helpers/helpers.h"
-#include "fftw3.h"
 
 using namespace std;
 
