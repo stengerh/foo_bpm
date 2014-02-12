@@ -67,6 +67,12 @@
 * 2014-02-11 | 0.2.4.2      | Fixed abort checks in worker thread
 *            |              | Added basic exception handling in worker thread
 *            |              | Numerous refactorings
+* -----------------------------------------------------------------------------
+* 2014-02-12 | 0.2.4.3      | Preferences page fresh up
+*            |              | Enabled dialog navigation in result and manual
+*            |              | dialogs
+*            |              | Introduced wrapper for FFTW to prepare
+*            |              | replacement
 ******************************************************************************/
 
 #include "stdafx.h"
@@ -75,7 +81,7 @@
 
 DECLARE_COMPONENT_VERSION(
 	"BPM Analyser",
-	"0.2.4.2",
+	"0.2.4.3",
 	"A component for automatically analysing the BPM of audio files.\n"
 	"\n"
 	"Makes use of the FFTW library (www.fftw.org)\n"
