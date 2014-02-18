@@ -8,3 +8,6 @@
 /foo_bpm/Debug
 /foo_bpm/Release
 /foo_bpm/*.aps
+/fftw_test/*.user
+/fftw_test/Debug
+/fftw_test/Release
