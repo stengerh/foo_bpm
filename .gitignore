@@ -11,3 +11,6 @@
 /fftw_test/*.user
 /fftw_test/Debug
 /fftw_test/Release
+/kiss_fft_test/*.user
+/kiss_fft_test/Debug
+/kiss_fft_test/Release
