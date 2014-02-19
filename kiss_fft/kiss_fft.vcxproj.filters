@@ -15,10 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="ReadMe.txt" />
-    <None Include="include\kiss_fft\kissfft.hh" />
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="src\kiss_fft.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -36,5 +32,12 @@
     <ClInclude Include="include\kiss_fft\kiss_fftr.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="include\kiss_fft\kissfft.hh">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="COPYING" />
+    <None Include="README" />
   </ItemGroup>
 </Project>

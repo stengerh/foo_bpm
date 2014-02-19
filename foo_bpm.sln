@@ -33,8 +33,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "foobar2000_SDK", "..\..\sdk
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "kiss_fft", "kiss_fft\kiss_fft.vcxproj", "{F863288B-1B74-436D-9AC0-11EBA7B508DD}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "fftw_test", "fftw_test\fftw_test.vcxproj", "{C1FED2D9-2D0D-4EB2-B17B-AA3AED4D44A8}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "kiss_fft_test", "kiss_fft_test\kiss_fft_test.vcxproj", "{DBC1BE9A-D312-44D8-A1AB-A6305C04D6C0}"
 EndProject
 Global
@@ -97,12 +95,6 @@ Global
 		{F863288B-1B74-436D-9AC0-11EBA7B508DD}.Release|Win32.ActiveCfg = Release|Win32
 		{F863288B-1B74-436D-9AC0-11EBA7B508DD}.Release|Win32.Build.0 = Release|Win32
 		{F863288B-1B74-436D-9AC0-11EBA7B508DD}.Release|x64.ActiveCfg = Release|Win32
-		{C1FED2D9-2D0D-4EB2-B17B-AA3AED4D44A8}.Debug|Win32.ActiveCfg = Debug|Win32
-		{C1FED2D9-2D0D-4EB2-B17B-AA3AED4D44A8}.Debug|Win32.Build.0 = Debug|Win32
-		{C1FED2D9-2D0D-4EB2-B17B-AA3AED4D44A8}.Debug|x64.ActiveCfg = Debug|Win32
-		{C1FED2D9-2D0D-4EB2-B17B-AA3AED4D44A8}.Release|Win32.ActiveCfg = Release|Win32
-		{C1FED2D9-2D0D-4EB2-B17B-AA3AED4D44A8}.Release|Win32.Build.0 = Release|Win32
-		{C1FED2D9-2D0D-4EB2-B17B-AA3AED4D44A8}.Release|x64.ActiveCfg = Release|Win32
 		{DBC1BE9A-D312-44D8-A1AB-A6305C04D6C0}.Debug|Win32.ActiveCfg = Debug|Win32
 		{DBC1BE9A-D312-44D8-A1AB-A6305C04D6C0}.Debug|Win32.Build.0 = Debug|Win32
 		{DBC1BE9A-D312-44D8-A1AB-A6305C04D6C0}.Debug|x64.ActiveCfg = Debug|Win32
