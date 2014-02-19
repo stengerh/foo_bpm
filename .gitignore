@@ -14,3 +14,6 @@
 /kiss_fft_test/*.user
 /kiss_fft_test/Debug
 /kiss_fft_test/Release
+/kiss_fft/*.user
+/kiss_fft/Release
+/kiss_fft/Debug
