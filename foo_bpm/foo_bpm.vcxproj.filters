@@ -45,7 +45,7 @@
     <ClCompile Include="bpm_fft.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="bpm_fft_impl_fftw.cpp">
+    <ClCompile Include="bpm_fft_impl_kissfft.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -92,7 +92,7 @@
     <ClInclude Include="bpm_fft.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="bpm_fft_impl_fftw.h">
+    <ClInclude Include="bpm_fft_impl_kissfft.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
