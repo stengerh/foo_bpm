@@ -99,11 +99,11 @@ double bpm_auto_analysis::run(threaded_process_status & thread_status, abort_cal
 	int progress = 0;
 	int max_progress = (int)((offset_pct_max - offset_pct_min) / offset_pct_inc) * 6; // Multiply by 6 due to the 6 steps in the loop below
 
-	thread_status.set_progress(0, max_progress);
+	thread_status.set_progress_secondary(0, max_progress);
 
 	if (m_track->get_length() < seconds_to_read)
 	{
-		thread_status.set_progress(max_progress, max_progress);
+		thread_status.set_progress_secondary(max_progress, max_progress);
 		console::formatter() << "foo_bpm: Error analysing " << m_track->get_path() << ". Track length too short. BPM set to zero.";
 		return 0;
 	}
@@ -116,22 +116,22 @@ double bpm_auto_analysis::run(threaded_process_status & thread_status, abort_cal
 			bpm_list.push_back(0);
 			break;
 		}
-		thread_status.set_progress(++progress, max_progress);
+		thread_status.set_progress_secondary(++progress, max_progress);
 		if (p_abort.is_aborting()) break;
 		calc_stft();
-		thread_status.set_progress(++progress, max_progress);
+		thread_status.set_progress_secondary(++progress, max_progress);
 		if (p_abort.is_aborting()) break;
 		calc_spectral_flux();
-		thread_status.set_progress(++progress, max_progress);
+		thread_status.set_progress_secondary(++progress, max_progress);
 		if (p_abort.is_aborting()) break;
 		pick_peaks();
-		thread_status.set_progress(++progress, max_progress);
+		thread_status.set_progress_secondary(++progress, max_progress);
 		if (p_abort.is_aborting()) break;
 		calc_bpm();
-		thread_status.set_progress(++progress, max_progress);
+		thread_status.set_progress_secondary(++progress, max_progress);
 		if (p_abort.is_aborting()) break;
 		clean_up();
-		thread_status.set_progress(++progress, max_progress);
+		thread_status.set_progress_secondary(++progress, max_progress);
 		if (p_abort.is_aborting()) break;
 	}
 

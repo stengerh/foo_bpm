@@ -87,7 +87,7 @@ void bpm_auto_analysis_thread::run(threaded_process_status & p_status, abort_cal
 {
 	m_bpm_results.resize(0);
 
-	p_status.set_progress_secondary(0, m_tracks.get_size());
+	p_status.set_progress(0, m_tracks.get_size());
 
 	// For each item in the playlist selection
 	for (t_size index = 0; index < m_tracks.get_size(); index++)
@@ -107,7 +107,7 @@ void bpm_auto_analysis_thread::run(threaded_process_status & p_status, abort_cal
 			double bpm_result = bpm.run_safe(p_status, p_abort);
 			m_bpm_results.push_back(bpm_result);
 
-			p_status.set_progress_secondary(index+1, m_tracks.get_size());
+			p_status.set_progress(index+1, m_tracks.get_size());
 		}
 
 		if (p_abort.is_aborting()) break;
