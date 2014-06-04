@@ -76,7 +76,8 @@
 * -----------------------------------------------------------------------------
 * 2014-02-19 | 0.2.4.4      | Replaced FFTW with KISS FFT
 * -----------------------------------------------------------------------------
-* 2014-05-01 | 0.2.4.5      | Windows 7 taskbar indicates total track progress
+* 2014-06-04 | 0.2.4.5      | Windows 7 taskbar indicates total track progress
+*            |              | Fixed automatic tag writing
 ******************************************************************************/
 
 #include "stdafx.h"
@@ -85,10 +86,10 @@
 
 DECLARE_COMPONENT_VERSION(
 	"BPM Analyser",
-	"0.2.4.4",
+	"0.2.4.5",
 	"A component for automatically analysing the BPM of audio files.\n"
 	"\n"
-	"(c) 2009-2010 Michael Balzer (fraganator@hotmail.com)\n"
+	"(c) 2009-2014 Michael Balzer (fraganator@hotmail.com)\n"
 	"(c) 2014 Holger Stenger\n"
 	"\n"
 	"References:\n"
