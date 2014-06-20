@@ -9,6 +9,7 @@ class file_info_filter_bpm : public file_info_filter
 {
 public:
 	file_info_filter_bpm(const metadb_handle_list & p_tracks, const char * p_bpm_tag, const std::vector<double> & p_bpm_results);
+	file_info_filter_bpm(metadb_handle_ptr p_track, const char * p_bpm_tag, double p_bpm_result);
 	bool apply_filter(metadb_handle_ptr p_track, t_filestats p_stats, file_info & p_info);
 
 private:

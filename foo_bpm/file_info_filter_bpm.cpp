@@ -22,6 +22,13 @@ file_info_filter_bpm::file_info_filter_bpm(const metadb_handle_list & p_tracks, 
 	}
 }
 
+file_info_filter_bpm::file_info_filter_bpm(metadb_handle_ptr p_track, const char * p_bpm_tag, double p_bpm_result)
+	: m_bpm_tag(p_bpm_tag)
+{
+	m_tracks.add_item(p_track);
+	m_bpm_results.push_back(p_bpm_result);
+}
+
 bool file_info_filter_bpm::apply_filter(metadb_handle_ptr p_track, t_filestats p_stats, file_info & p_info)
 {
 	t_size index;

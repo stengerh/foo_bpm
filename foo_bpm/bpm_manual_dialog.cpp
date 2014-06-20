@@ -6,6 +6,7 @@
 #include "globals.h"
 #include "preferences.h"
 #include "format_bpm.h"
+#include "file_info_filter_bpm.h"
 
 using std::string;
 
@@ -36,18 +37,11 @@ LRESULT bpm_manual_dialog::OnUpdateFileClicked(UINT uNotifyCode, int nID, CWindo
 
 	if (core_api::assert_main_thread() && static_api_ptr_t<playback_control>()->get_now_playing(track))
 	{
-		file_info_impl info;
-
-		if (track->get_info(info))
-		{
-			info.meta_set(bpm_config_bpm_tag.get_ptr(), format_bpm(m_bpm));
-
-			static_api_ptr_t<metadb_io_v2>()->update_info_async_simple(
-				pfc::list_single_ref_t<metadb_handle_ptr>(track),
-				pfc::list_single_ref_t<const file_info *>(&info),
-				core_api::get_main_window(),
-				NULL, NULL);
-		}
+		static_api_ptr_t<metadb_io_v2>()->update_info_async(
+			pfc::list_single_ref_t<metadb_handle_ptr>(track),
+			new service_impl_t<file_info_filter_bpm>(track, bpm_config_bpm_tag, m_bpm),
+			core_api::get_main_window(),
+			0, NULL);
 	}
 
 	return 0;

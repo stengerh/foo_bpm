@@ -3,8 +3,8 @@
 #include "guid.h"
 #include "foo_bpm.h"
 #include "bpm_auto_analysis_thread.h"
-#include "format_bpm.h"
 #include "bpm_manual_dialog.h"
+#include "file_info_filter_scale_bpm.h"
 
 static contextmenu_group_popup_factory g_bpm_context_group(guid_bpm_context_group, contextmenu_groups::root, "BPM Analyser", 0);
 
@@ -123,45 +123,11 @@ void bpm_contextmenu_item::run_manual_analysis(metadb_handle_list_cref p_data)
 
 void bpm_contextmenu_item::run_scale_bpm(metadb_handle_list_cref p_data, double p_scale)
 {
-	const pfc::string8 bpm_tag = bpm_config_bpm_tag;
-
-	metadb_handle_list tracks;
-	pfc::list_t<file_info_impl> infos;
-
-	tracks.prealloc(p_data.get_size());
-	infos.prealloc(p_data.get_size());
-
-	// For each item in the playlist selection
-	for (t_size index = 0; index < p_data.get_size(); index++)
-	{
-		metadb_handle_ptr track = p_data[index];
-		file_info_impl info;
-
-		if (track->get_info(info) && info.meta_exists(bpm_tag))
-		{
-			tracks.add_item(track);
-			infos.add_item(info);
-		}
-	}
-
-	for (t_size index = 0; index < infos.get_size(); index++)
-	{
-		const char * str = infos[index].meta_get(bpm_tag, 0);
-
-		float bpm = 0.0f;
-		if (sscanf_s(str, "%f", &bpm) == 1)
-		{
-			bpm = static_cast<float>(bpm * p_scale);
-
-			infos[index].meta_set(bpm_tag, format_bpm(bpm));
-		}
-	}
-
-	static_api_ptr_t<metadb_io_v2>()->update_info_async_simple(tracks,
-		pfc::ptr_list_const_array_t<const file_info, file_info_impl *>(infos.get_ptr(), infos.get_size()),
+	static_api_ptr_t<metadb_io_v2>()->update_info_async(
+		p_data,
+		new service_impl_t<file_info_filter_scale_bpm>(bpm_config_bpm_tag, p_scale),
 		core_api::get_main_window(),
-		/* p_op_flags */ 0,
-		/* p_notify */ NULL);
+		0, NULL);
 }
 
 static contextmenu_item_factory_t<bpm_contextmenu_item> contextmenu_factory;
