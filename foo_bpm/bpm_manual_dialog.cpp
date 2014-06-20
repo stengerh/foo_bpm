@@ -41,7 +41,8 @@ LRESULT bpm_manual_dialog::OnUpdateFileClicked(UINT uNotifyCode, int nID, CWindo
 			pfc::list_single_ref_t<metadb_handle_ptr>(track),
 			new service_impl_t<file_info_filter_bpm>(track, bpm_config_bpm_tag, m_bpm),
 			core_api::get_main_window(),
-			0, NULL);
+			metadb_io_v2::op_flag_background | metadb_io_v2::op_flag_delay_ui,
+			NULL);
 	}
 
 	return 0;

@@ -24,7 +24,8 @@ LRESULT bpm_result_dialog::OnInitDialog(CWindow wndFocus, LPARAM lInitParam)
 			m_tracks,
 			new service_impl_t<file_info_filter_bpm>(m_tracks, bpm_config_bpm_tag, m_bpm_results),
 			core_api::get_main_window(),
-			0, NULL);
+			metadb_io_v2::op_flag_background | metadb_io_v2::op_flag_delay_ui,
+			NULL);
 
 		DestroyWindow();
 	}
@@ -73,7 +74,8 @@ LRESULT bpm_result_dialog::OnOK(UINT uNotifyCode, int nID, CWindow wndCtl)
 		m_tracks,
 		new service_impl_t<file_info_filter_bpm>(m_tracks, bpm_config_bpm_tag, m_bpm_results),
 		core_api::get_main_window(),
-		0, NULL);
+		metadb_io_v2::op_flag_background | metadb_io_v2::op_flag_delay_ui,
+		NULL);
 
 	DestroyWindow();
 	return 0;

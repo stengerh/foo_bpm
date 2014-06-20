@@ -127,7 +127,8 @@ void bpm_contextmenu_item::run_scale_bpm(metadb_handle_list_cref p_data, double 
 		p_data,
 		new service_impl_t<file_info_filter_scale_bpm>(bpm_config_bpm_tag, p_scale),
 		core_api::get_main_window(),
-		0, NULL);
+		metadb_io_v2::op_flag_background | metadb_io_v2::op_flag_delay_ui,
+		NULL);
 }
 
 static contextmenu_item_factory_t<bpm_contextmenu_item> contextmenu_factory;

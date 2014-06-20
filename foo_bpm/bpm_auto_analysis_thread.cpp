@@ -121,6 +121,9 @@ void bpm_auto_analysis_thread::on_done(HWND p_wnd, bool p_was_aborted)
 		bpm_result_dialog* m_result_dialog = new bpm_result_dialog(m_tracks, m_infos, m_bpm_results);
 
 		m_result_dialog->Create(core_api::get_main_window(), NULL);
-		m_result_dialog->ShowWindow(SW_SHOWNORMAL);
+		if (m_result_dialog->IsWindow())
+		{
+			m_result_dialog->ShowWindow(SW_SHOWNORMAL);
+		}
 	}
 }
