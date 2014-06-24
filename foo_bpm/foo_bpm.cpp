@@ -78,6 +78,10 @@
 * -----------------------------------------------------------------------------
 * 2014-06-04 | 0.2.4.5      | Windows 7 taskbar indicates total track progress
 *            |              | Fixed automatic tag writing
+* -----------------------------------------------------------------------------
+* 2014-06-24 | 0.2.4.6      | Show tag progress window delayed
+*            |              | Refactored tag writing for doubling and halving
+*            |              | BPM tag
 ******************************************************************************/
 
 #include "stdafx.h"
@@ -86,7 +90,7 @@
 
 DECLARE_COMPONENT_VERSION(
 	"BPM Analyser",
-	"0.2.4.5",
+	"0.2.4.6",
 	"A component for automatically analysing the BPM of audio files.\n"
 	"\n"
 	"(c) 2009-2014 Michael Balzer (fraganator@hotmail.com)\n"
