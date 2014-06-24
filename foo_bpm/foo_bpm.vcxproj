@@ -140,8 +140,8 @@
     <ResourceCompile Include="foo_bpm.rc" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\CHANGES.md" />
     <None Include="..\README.md" />
-    <None Include="CHANGES.md" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

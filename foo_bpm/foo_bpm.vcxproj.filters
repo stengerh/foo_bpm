@@ -115,6 +115,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\README.md" />
-    <None Include="CHANGES.md" />
+    <None Include="..\CHANGES.md" />
   </ItemGroup>
 </Project>
